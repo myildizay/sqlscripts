@@ -1,0 +1,13 @@
+with Sorted as (
+  select Region, ShopID, Units, count(ShopID) over (partition by Region) cnt, row_number() over (partition by Region order by Units) rn
+    from dbo.tmpPjf_024_ShopsUnvrs
+   where Units is not null -- only TSC shops should count for Region Median
+),
+Median as (
+  select Region, avg(Units) as UnitsAvg from Sorted where rn between (cnt + 1)/2 and (cnt + 2)/2 group by Region
+)
+select Unvrs.Region, ShopID, onPanel, isnull(Units, UnitsAvg) as Units, row_number() over (partition by null order by Units desc) as RN
+  into dbo.tmpPjf_025_ShopsSorted
+  from dbo.tmpPjf_024_ShopsUnvrs Unvrs
+  join Median m
+    on Unvrs.Region = m.Region

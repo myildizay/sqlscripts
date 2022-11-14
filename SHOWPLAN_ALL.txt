@@ -1,0 +1,15 @@
+
+SET SHOWPLAN_ALL ON;  
+GO  
+-- First query.  
+SELECT *   
+FROM AccountProductDataNrm
+WHERE ProductName = 'ABILIFY TABLET 5 MG 28 TABLETLIK AMBALAJ';  
+GO  
+-- Second query.  
+SELECT *   
+FROM AccountProductDataNrm
+WHERE ProductName LIKE 'ABILIFY TABLET 5 MG 28 TABLETLIK AMBALAJ';  
+GO  
+SET SHOWPLAN_ALL OFF;  
+GO  

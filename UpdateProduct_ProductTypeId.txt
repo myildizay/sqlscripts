@@ -1,0 +1,55 @@
+USE [Shopping]
+GO
+/****** Object:  StoredProcedure [dbo].[spUpProductProductType]    Script Date: 06/13/2012 21:36:26 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[spUpProductProductType]
+@secim smallint , @productProductTypeId nvarchar(1000), @isDeleted nvarchar(1000) 
+AS
+
+
+
+if @secim=3
+begin
+	
+	CREATE TABLE #TMP(PTYPE_ID int, IS_DELETED tinyint)
+	SELECT * INTO #tmp1 from Split(@productProductTypeId ,'|')
+	
+	DECLARE myCursor CURSOR FOR SELECT ITEMS FROM #tmp1
+	OPEN myCursor 
+		FETCH NEXT FROM myCursor INTO @productProductTypeId
+		WHILE @@FETCH_STATUS =0
+		BEGIN
+			--SELECT @productProductTypeId
+			INSERT INTO #TMP (PTYPE_ID) VALUES (@productProductTypeId)
+		FETCH NEXT FROM myCursor  INTO @productProductTypeId
+		END
+	CLOSE myCursor 
+	DEALLOCATE myCursor
+	DROP TABLE #tmp1
+	--------------------------------------------------------------------
+	SELECT * INTO #tmp2 from Split(@isDeleted,'|')
+	
+	DECLARE myCursor CURSOR FOR SELECT ITEMS FROM #tmp2
+	OPEN myCursor 
+		FETCH NEXT FROM myCursor INTO @isDeleted
+		WHILE @@FETCH_STATUS =0
+		BEGIN
+			--SELECT @productProductTypeId
+			INSERT INTO #TMP (IS_DELETED) VALUES (@isDeleted)
+		FETCH NEXT FROM myCursor  INTO @isDeleted
+		END
+	CLOSE myCursor 
+	DEALLOCATE myCursor
+	DROP TABLE #tmp2
+	--------------------------------------------------------------------
+	SELECT * FROM #TMP 
+	DROP TABLE #TMP
+	
+	--UPDATE ProductProductType set IsDeleted=@act WHERE ProductProductTypeId=@proProTipId 
+	--select * from ProductProductType 
+	
+end
+

@@ -1,0 +1,18 @@
+SELECT * FROM UserLogin as TU
+LEFT JOIN Person as TP ON TP.PersonId = TU.PersonId
+LEFT JOIN Brand as TB ON TB.BrandId = TU.BrandId
+LEFT JOIN UserRights as TUR ON TUR.UserRightsId = TU.UserRightsId
+LEFT JOIN Sex as TS ON TS.SexId = TP.PersonSexId
+WHERE TU.IsDeleted=0
+
+
+SELECT * FROM Brand as TB
+LEFT JOIN BrandRights as TBR ON TBR.BrandRightsId= TB.BrandRightsId
+WHERE TB.IsDeleted = 0 
+
+
+INSERT INTO Brand  (BrandId, Brand, BrandLogo, BrandRightsId, CreatedDate, IsDeleted) VALUES ()
+INSERT INTO Product (ProductId, Product, CreatedDate, SexId, IsDeleted) VALUES()
+INSERT INTO LoginBrand (LoginBrandId, BrandId, LoginBrandName, LoginBrandPassword, BrandRights, CreatedDate, IsDeleted) VALUES()
+INSERT INTO UserLogin (UserId, UserName, UserPassword, PersonId, BrandId, UserRightsId, CreatedDate, IsDeleted) VALUES ()
+INSERT INTO Person (PersonId, PersonName, PersonSurname, PersonMail, PersonSexId, CreatedDate, IsDeleted) VALUES ()
